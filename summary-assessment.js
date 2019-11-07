@@ -60,6 +60,14 @@ function each(coll, f) {
   
   function wordLengths(str) {
       // TODO: your code here 
+      var arr = str.split(' ');  /* create an array containing each word composing the string  */
+      /* map function will use each() ti iterate through every element of the
+       array and will put the output of the function map() took as a parameter
+       in an  array
+       */
+      return map(arr, function(element) {
+      	return element.length;
+      })
   }
   
   //=============================================================================
@@ -73,6 +81,15 @@ function each(coll, f) {
   
   function countOccurrences(string, character) {
       // your code is here
+      var arr = string.split(''); /* creats an array composed of each caracter in our string */
+      var count = 0; /* the count variable will count how many times we encountered the character in our string*/
+      each(arr, function(element, i) {
+      	if(element === character) {
+      		count++; /* if we find that that (arr[i] which is in our case element) is strictly
+      		 equal to our character we increment our counter by one */
+      	}      
+      })
+      return count;
   }
   
   //=============================================================================
@@ -85,6 +102,15 @@ function each(coll, f) {
   
   function wordsLongerThanThree(str) {
       // TODO: your code here 
+      var arr = str.split(' '); /* create an array composed of each word in our string*/
+
+      return filter(arr, function(element) {  
+      	return element.length > 3;     /*  the filter() function uses a predicate test (true ou false test)
+      	 and the element of the array passes the predicate test it gets pushed into an array defined
+      	  by the filter function and  then we retur nthe filter function to get the array containg only 
+      	  the words which lengths are higher than 3*/
+      	
+      });
   }
   
   //=============================================================================
@@ -100,6 +126,19 @@ function each(coll, f) {
   
   function repeatString(str, count) { 
    // TODO: your code here 
+   if(count <= 0) { /* this is our stopping condition for the recurcive function repeatString : 
+   in fact if the condition count <= 0 is met our function will add the results of the previous functions calls the string "" and than exit the function
+   */
+   	return "";
+
+   }
+   return str + repeatString(str, count -1); /* returns the input str
+    and the function repeatString decrementing the count by one   */ 
+   /* 
+		Our function repeatString uses recursion principles to return the str contained that we passed to it as a parameter 
+		as many times as count is :
+		the 
+   */
   } 
    
   
@@ -130,6 +169,48 @@ function each(coll, f) {
   
   // Write your code here .....
   
+  function makePizza(crust, size, numberOfSlice) {
+  	makePizza.crust = crust;
+  	makePizza.size = size;
+  	makePizza.numberOfSlice = numberOfSlice;
+  	makePizza.ingredients = [];
+
+  	return  {
+  		addIngredients: function(ingredient) {
+  			makePizza.ingredients.push(ingredient);
+  		},
+  		displayIngredaints: function() {
+  			var outputStr = "";
+  			for(let i = 0; i < makePizza.ingredients.length - 1; i++) {
+  				outputStr += makePizza.ingredients[i]+ ",";
+  			}
+  			outputStr += makePizza.ingredients[makePizza.ingredients.length - 1];
+
+  			return outputStr;
+  		},
+  		bakePizza: function() {
+  			var ourString = "";
+  			ourString = "Your " + makePizza.crust  + " " + makePizza.size  + " " + makePizza.numberOfSlice  + " slice pizza is done"; 
+  			
+  			setTimeout(ourString, 2000);
+  		},
+  		eatSlice: function() {
+  			if(makePizza.numberOfSlice === 0) {
+  				return "You can't have pizza man !"
+  			}else if(makePizza.numberOfSlice > 0) {
+  				makePizza.numberOfSlice--;
+  				return "Come here and have a slice !"
+  			}
+  		}
+  	};
+  }
+
+
+
+
+
+
+
   //=============================================================================
   /*                                  Q6                                      */
   //=============================================================================
@@ -153,9 +234,59 @@ function each(coll, f) {
   */
   
   // Now, to make sure that you are actually reading, make a comment below this and type: Yes I am
-  
+                                              /*    Yes I am   */
   // Write your code here .....
-  
+  function ReadingList() {
+  	var readingList = {};
+ /*
+
+Your class should has:
+  "read" for the number of books that finish reading
+  "unRead" for the number of books that still not read
+  "toRead" array for the books names that want to read in the future
+  "currentRead" for the name of the book that is reading currently
+  "readBooks" Array of the names of books that finish read
+
+*/
+
+	readingList.read = 0;
+	readingList.unRead = 0;
+	readingList.toRead = [];
+	readingList.currentRead = "";
+	readingList.readBooks = [];
+	readingList.AddBook = AddBook;
+	readingList.finishCurrentBook = finishCurrentBook;
+  	return readingList;
+  }
+
+ /* "AddBook" function that:
+  a- Accept the book name as parameter
+  b- Add the new book to "toRead" array
+  c- Increment the number of the unread books.
+  */
+  var AddBook = function(bookName) {
+  	this.toRead.push(bookName);
+  	this.unRead++;
+  };
+
+  /*
+  "finishCurrentBook" function that:
+  a- Add the "currentRead" to the "readBooks" array
+  b- Increment the "read" books
+  c- Change the "currentRead" to be the first book from "toRead" array
+  d- Decrement the number of "unread" books
+  */
+
+  var finishCurrentBook = function() {
+  	this.readBooks.push(this.currentRead);
+  	this.toRead.shift(this.currentRead);
+  	this.unRead--;
+  };
+
+
+
+
+
   //=============================================================================
   /*                                  Q7                                       */
   //=============================================================================
@@ -176,6 +307,39 @@ function each(coll, f) {
   
   // Write your code here .....
   
+	function makeSafe(integer) {
+  var storage = integer;
+  var strItems="";
+  function addItem(item, itemSize) {
+
+      var  sizer = 0;
+    if(itemSize === "big") {
+      
+      sizer = 3;
+    }else if(itemSize === "medium") {
+    
+      sizer = 2;
+    }else if(itemSize === "small") {
+     
+      sizer = 1;
+    }
+
+    if(sizer <= storage) {
+      strItems += item + " ";
+      storage -= sizer;
+    }else if(sizer > storage) {
+      return "Can't fit";
+    }
+    
+    if(storage === 0) {
+      return strItems;
+    }
+  }
+
+  return addItem;
+} 
+
+
   //=============================================================================
   /*                                  Q8                                       */
   //=============================================================================
